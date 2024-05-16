@@ -7,9 +7,9 @@ import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementReassign
 import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementSet;
 
 public interface NodeStatementVisitor {
-    public String visit(NodeStatementExit exitStmt);
-    public String visit(NodeStatementPrint printStmt, int i);
-    public String visit(NodeStatementPrintLine printLineStmt, int i);
-    public String visit(NodeStatementSet setStmt);
-    public String visit(NodeStatementReassignVar reassignVarStmt);
+    String visit(NodeStatementExit exitStmt);
+    String visit(NodeStatementPrint printStmt, int i);
+    String visit(NodeStatementPrintLine printLineStmt, int i);
+    String visit(NodeStatementSet setStmt);
+    String visit(NodeStatementReassignVar reassignVarStmt);
 }
