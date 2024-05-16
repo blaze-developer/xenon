@@ -25,7 +25,7 @@ public class App {
         boolean debugMode = false;
 
         if (args.length == 2) {
-            debugMode = args[1].equals("true") ? true : false;
+            debugMode = args[1].equals("true");
         }
 
         String code = "";

@@ -49,21 +49,18 @@ public class Parser {
     }
 
     private boolean isSemi(int k) {
-        return exists(k) && peek(k).is(Token.Type.ENDLINE);
+        return exists(k) && peek(k).type == Token.Type.ENDLINE;
     }
 
     private NodeExpression parseExpr(Token expression) {
-        switch(expression.type) {
-            
-            case INT_LITERAL:
-                return new NodeExpressionIntLiteral(expression);
-            case IDENTIFIER:
-                return new NodeExpressionIdent(expression);
-            default:
+        return switch (expression.type) {
+            case INT_LITERAL -> new NodeExpressionIntLiteral(expression);
+            case IDENTIFIER -> new NodeExpressionIdent(expression);
+            default -> {
                 Errorer.syntaxErr("Invalid Expression: " + expression);
-                return null;
-
-        }
+                yield null;
+            }
+        };
     }
 
     private Token parseString(Token token) {
@@ -87,7 +84,7 @@ public class Parser {
 
             return stmt;
         } else {
-            Errorer.syntaxErr("Expected \';\'");
+            Errorer.syntaxErr("Expected ';'");
         }
 
         return null; // just to silence warnings
@@ -104,7 +101,7 @@ public class Parser {
 
             return stmt;
         } else {
-            Errorer.syntaxErr("Expected \';\'");
+            Errorer.syntaxErr("Expected ';'");
         }
 
         return null;
@@ -121,7 +118,7 @@ public class Parser {
 
             return stmt;
         } else {
-            Errorer.syntaxErr("Expected \';\'");
+            Errorer.syntaxErr("Expected ';'");
         }
 
         return null;
@@ -139,13 +136,13 @@ public class Parser {
                         return statementSet;
 
                     } else {
-                        Errorer.syntaxErr("Expected \';\'");
+                        Errorer.syntaxErr("Expected ';'");
                     }
                 } else {
                     Errorer.syntaxErr("Expected Int Literal");
                 }
             } else {
-                Errorer.syntaxErr("Expected \'=\'");
+                Errorer.syntaxErr("Expected '='");
             }
         } else {
             Errorer.syntaxErr("Expected identifier.");

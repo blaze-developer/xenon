@@ -16,7 +16,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
 
     private int stackSize = 0;
 
-    private HashMap<String, Integer> variables = new HashMap<String, Integer>();
+    private final HashMap<String, Integer> variables = new HashMap<>();
 
     private String push(String register) {
         stackSize++;
@@ -75,7 +75,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
         asm += push(setStmt.intlit.content);
 
         if (variables.get(setStmt.identifier.content) != null) {
-            Errorer.usageErr("variable \'" + setStmt.identifier.content + "\' is already defined.");
+            Errorer.usageErr("variable '" + setStmt.identifier.content + "' is already defined.");
         }
 
         variables.put(setStmt.identifier.content, stackSize);
@@ -98,7 +98,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     public String visit(NodeExpressionIdent expr, String register) {
         
         if (variables.get(expr.identifier.content) == null) {
-            Errorer.syntaxErr("Undeclared identifier \'" + expr.identifier.content + "\'!");
+            Errorer.syntaxErr("Undeclared identifier '" + expr.identifier.content + "'!");
         }
 
         int varPos = variables.get(expr.identifier.content);

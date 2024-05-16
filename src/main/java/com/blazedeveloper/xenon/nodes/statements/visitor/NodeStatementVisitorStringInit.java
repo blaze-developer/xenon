@@ -10,12 +10,12 @@ public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
 
     @Override
     public String visit(NodeStatementExit exitStmt) {
-        return new String();
+        return "";
     }
 
     @Override
     public String visit(NodeStatementPrint printStmt, int index) {
-        String asm = new String();
+        String asm = "";
 
         asm += "    string" + index + " db \"" + printStmt.string_literal.content + "\"\n";
         asm += "    stringlen" + index + " equ $-string" + index + "\n";
@@ -25,7 +25,7 @@ public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
 
     @Override
     public String visit(NodeStatementPrintLine printLineStmt, int index) {
-        String asm = new String();
+        String asm = "";
 
         asm += "    string" + index + " db \"" + printLineStmt.string_literal.content + "\"\n";
         asm += "    stringlen" + index + " equ $-string" + index + "\n";
@@ -35,7 +35,7 @@ public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
 
     @Override
     public String visit(NodeStatementSet setStmt) {
-        return new String();
+        return "";
     }
 
     @Override
