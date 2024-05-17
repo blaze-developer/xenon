@@ -1,0 +1,6 @@
+set x = 10;
+x = 5;
+
+// this should output 5
+printline "Hello, World!";
+exit x;

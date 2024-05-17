@@ -3,7 +3,7 @@ package main.java.com.blazedeveloper.xenon.nodes.statements.visitor;
 import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementExit;
 import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrint;
 import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrintLine;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementReassignVar;
+import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementAssign;
 import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementSet;
 
 public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
@@ -39,7 +39,7 @@ public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
     }
 
     @Override
-    public String visit(NodeStatementReassignVar reassignVarStmt) {
+    public String visit(NodeStatementAssign reassignVarStmt) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }

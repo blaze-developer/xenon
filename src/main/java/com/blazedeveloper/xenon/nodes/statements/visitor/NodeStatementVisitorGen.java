@@ -9,7 +9,7 @@ import main.java.com.blazedeveloper.xenon.nodes.expressions.visitor.NodeExpressi
 import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementExit;
 import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrint;
 import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrintLine;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementReassignVar;
+import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementAssign;
 import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementSet;
 
 public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpressionVisitor {
@@ -60,7 +60,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     }
 
     @Override
-    public String visit(NodeStatementReassignVar reassignVarStmt) {
+    public String visit(NodeStatementAssign reassignVarStmt) {
         String asm = "";
 
         asm += "    ";
@@ -72,7 +72,8 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     public String visit(NodeStatementSet setStmt) {
         String asm = "";
 
-        asm += push(setStmt.intlit.content);
+        asm += setStmt.expression.accept(this, "rax");
+        asm += "    push rax\n";
 
         if (variables.get(setStmt.identifier.content) != null) {
             Errorer.usageErr("variable '" + setStmt.identifier.content + "' is already defined.");

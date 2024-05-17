@@ -127,19 +127,15 @@ public class Parser {
     private NodeStatementSet parseSet() {
         if (exists(1) && peek(1).type == Token.Type.IDENTIFIER) {
             if (exists(2) && peek(2).type == Token.Type.EQ) {
-                if (exists(3) && peek(3).type == Token.Type.INT_LITERAL) {
-                    if (isSemi(4)) {
-                        // is valid
-                        NodeStatementSet statementSet = new NodeStatementSet(peek(1), peek(3));
-                        consume(4);
+                if (isSemi(4)) {
+                    // is valid
+                    NodeStatementSet statementSet = new NodeStatementSet(peek(1), parseExpr(peek(3)));
+                    consume(4);
 
-                        return statementSet;
+                    return statementSet;
 
-                    } else {
-                        Errorer.syntaxErr("Expected ';'");
-                    }
                 } else {
-                    Errorer.syntaxErr("Expected Int Literal");
+                    Errorer.syntaxErr("Expected ';'");
                 }
             } else {
                 Errorer.syntaxErr("Expected '='");
@@ -148,6 +144,22 @@ public class Parser {
             Errorer.syntaxErr("Expected identifier.");
         }
 
+        return null;
+    }
+
+    public NodeStatementAssign parseAssignment() {
+        if (peek(1).type == Token.Type.EQ) {
+            if (isSemi(3)) {
+                NodeStatementAssign node = new NodeStatementAssign(peek(), parseExpr(peek(2)));
+                consume(3);
+
+                return node;
+            } else {
+                Errorer.syntaxErr("Expected ';'");
+            }
+        } else {
+            Errorer.syntaxErr("Expected '='");
+        }
         return null;
     }
 
@@ -175,6 +187,10 @@ public class Parser {
 
                 case SET:
                     statements.add(parseSet());
+                    break;
+
+                case IDENTIFIER:
+                    statements.add(parseAssignment());
                     break;
 
                 default:

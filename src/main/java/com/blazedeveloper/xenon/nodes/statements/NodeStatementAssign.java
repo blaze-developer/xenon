@@ -4,18 +4,21 @@ import main.java.com.blazedeveloper.xenon.Token;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpression;
 import main.java.com.blazedeveloper.xenon.nodes.statements.visitor.NodeStatementVisitor;
 
-public class NodeStatementSet implements NodeStatement {
-    public final Token identifier;
-    public final NodeExpression expression;
+import java.beans.Expression;
 
-    public NodeStatementSet(Token identifier, NodeExpression expression) {
+public class NodeStatementAssign implements NodeStatement {
+
+    public final Token identifier;
+    public final NodeExpression expr;
+
+    public NodeStatementAssign(Token identifier, NodeExpression expr) {
         this.identifier = identifier;
-        this.expression = expression;
+        this.expr = expr;
     }
 
     @Override
     public String toString() {
-        return "Set: setting variable " + identifier.content + " to " + expression;
+        return "Variable Reassignment: reassigning " + identifier.content + " to " + expr;
     }
 
     @Override
