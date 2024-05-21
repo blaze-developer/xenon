@@ -36,6 +36,9 @@ public class Token {
         SET,
         DECLARE,
         IDENTIFIER,
-        ADDITION
+        ADD,
+        SUB,
+        MUL,
+        DIV
     }
 }
