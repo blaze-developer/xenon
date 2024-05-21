@@ -3,14 +3,11 @@ package main.java.com.blazedeveloper.xenon.nodes.statements.visitor;
 import java.util.HashMap;
 
 import main.java.com.blazedeveloper.xenon.Errorer;
+import main.java.com.blazedeveloper.xenon.Token;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIdent;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIntLiteral;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.visitor.NodeExpressionVisitor;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementExit;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrint;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrintLine;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementAssign;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementSet;
+import main.java.com.blazedeveloper.xenon.nodes.statements.*;
 
 public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpressionVisitor {
 
@@ -63,9 +60,21 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     public String visit(NodeStatementAssign reassignVarStmt) {
         String asm = "";
 
-        asm += "    ";
+        asm += reassignVarStmt.expr.accept(this, "rax");
+        asm += "    mov " + variableLocation(reassignVarStmt.identifier) + ", rax\n";
 
         return asm;
+    }
+
+    @Override
+    public String visit(NodeStatementDeclare nodeStatementDeclare) {
+        StringBuilder asm = new StringBuilder();
+
+        asm.append(push("0"));
+
+        declareIdentifier(nodeStatementDeclare.identifier, stackSize);
+
+        return asm.toString();
     }
 
     @Override
@@ -73,13 +82,9 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
         String asm = "";
 
         asm += setStmt.expression.accept(this, "rax");
-        asm += "    push rax\n";
+        asm += push("rax");
 
-        if (variables.get(setStmt.identifier.content) != null) {
-            Errorer.usageErr("variable '" + setStmt.identifier.content + "' is already defined.");
-        }
-
-        variables.put(setStmt.identifier.content, stackSize);
+        declareIdentifier(setStmt.identifier, stackSize);
 
         return asm;
     }
@@ -97,21 +102,31 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
 
     @Override
     public String visit(NodeExpressionIdent expr, String register) {
-        
-        if (variables.get(expr.identifier.content) == null) {
-            Errorer.syntaxErr("Undeclared identifier '" + expr.identifier.content + "'!");
-        }
-
-        int varPos = variables.get(expr.identifier.content);
-
-        int offset = (stackSize - varPos) * 8;
-
-        return "    mov " + register + ", [rsp + " + offset + "]\n"; 
+        return "    mov " + register + ", " + variableLocation(expr.identifier) + "\n";
     }
 
     @Override
     public String visit(NodeExpressionIntLiteral expr, String register) {
         return "    mov " + register + ", " + expr.int_literal.content + "\n";
+    }
+
+    private String variableLocation(Token identifier) {
+
+        if (variables.get(identifier.content) == null) {
+            Errorer.syntaxErr("Undeclared identifier '" + identifier.content + "'!");
+        }
+
+        int offset = (stackSize - variables.get(identifier.content)) * 8;
+        return "[rsp + " + offset + "]";
+    }
+
+    private void declareIdentifier(Token identifier, int value) {
+        if (variables.get(identifier.content) != null) {
+            Errorer.usageErr("identifier '" + identifier.content + "' is already defined.");
+        }
+
+        variables.put(identifier.content, value);
+
     }
 
 }

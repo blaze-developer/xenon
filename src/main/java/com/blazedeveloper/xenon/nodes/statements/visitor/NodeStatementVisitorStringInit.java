@@ -1,10 +1,6 @@
 package main.java.com.blazedeveloper.xenon.nodes.statements.visitor;
 
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementExit;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrint;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrintLine;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementAssign;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementSet;
+import main.java.com.blazedeveloper.xenon.nodes.statements.*;
 
 public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
 
@@ -40,8 +36,12 @@ public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
 
     @Override
     public String visit(NodeStatementAssign reassignVarStmt) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        return "";
     }
-    
+
+    @Override
+    public String visit(NodeStatementDeclare nodeStatementDeclare) {
+        return "";
+    }
+
 }

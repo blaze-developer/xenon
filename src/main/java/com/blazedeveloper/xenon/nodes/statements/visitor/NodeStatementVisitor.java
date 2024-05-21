@@ -1,10 +1,6 @@
 package main.java.com.blazedeveloper.xenon.nodes.statements.visitor;
 
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementExit;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrint;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementPrintLine;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementAssign;
-import main.java.com.blazedeveloper.xenon.nodes.statements.NodeStatementSet;
+import main.java.com.blazedeveloper.xenon.nodes.statements.*;
 
 public interface NodeStatementVisitor {
     String visit(NodeStatementExit exitStmt);
@@ -12,4 +8,5 @@ public interface NodeStatementVisitor {
     String visit(NodeStatementPrintLine printLineStmt, int i);
     String visit(NodeStatementSet setStmt);
     String visit(NodeStatementAssign reassignVarStmt);
+    String visit(NodeStatementDeclare nodeStatementDeclare);
 }

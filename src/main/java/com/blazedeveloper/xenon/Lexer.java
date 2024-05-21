@@ -69,16 +69,29 @@ public class Lexer {
                     buffer += consume();
                 }
 
-                if (buffer.equals("exit")) {
-                    tokens.add(new Token(Token.Type.EXIT));
-                } else if (buffer.equals("print")) {
-                    tokens.add(new Token(Token.Type.PRINT));
-                } else if (buffer.equals("printline")) {
-                    tokens.add(new Token(Token.Type.PRINTLN));
-                } else if (buffer.equals("set")) {
-                    tokens.add(new Token(Token.Type.SET));
-                } else {
-                    tokens.add(new Token(Token.Type.IDENTIFIER, buffer));
+                switch (buffer) {
+                    case Constants.Keywords.EXIT:
+                        tokens.add(new Token(Token.Type.EXIT));
+                        break;
+
+                    case Constants.Keywords.PRINT:
+                        tokens.add(new Token(Token.Type.PRINT));
+                        break;
+
+                    case Constants.Keywords.PRINTLN:
+                        tokens.add(new Token(Token.Type.PRINTLN));
+                        break;
+
+                    case Constants.Keywords.SET:
+                        tokens.add(new Token(Token.Type.SET));
+                        break;
+
+                    case Constants.Keywords.DECLARE:
+                        tokens.add(new Token(Token.Type.DECLARE));
+                        break;
+
+                    default:
+                        tokens.add(new Token(Token.Type.IDENTIFIER, buffer));
                 }
 
                 clearBuffer();

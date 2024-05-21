@@ -34,6 +34,8 @@ public class Token {
         ENDLINE,
         EQ,
         SET,
-        IDENTIFIER
+        DECLARE,
+        IDENTIFIER,
+        ADDITION
     }
 }
