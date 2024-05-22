@@ -27,3 +27,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### my stuff ###
+test
+test.xe
+test.asm
+test.o

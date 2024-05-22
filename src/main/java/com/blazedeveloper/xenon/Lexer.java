@@ -148,11 +148,34 @@ public class Lexer {
 
             } else if (Character.isWhitespace(peek())) {
                 consume();
-            } else if (peek() == '=') {
-                tokens.add(new Token(Token.Type.EQ));
-                consume();
             } else {
-                Errorer.syntaxErr("Unknown Token " + peek());
+                switch(peek()) {
+                    case '=':
+                        tokens.add(new Token(Token.Type.EQ));
+                        break;
+
+                    case '+':
+                        tokens.add(new Token(Token.Type.ADD));
+                        break;
+
+                    case '-':
+                        tokens.add(new Token(Token.Type.SUB));
+                        break;
+
+                    case '*':
+                        tokens.add(new Token(Token.Type.MUL));
+                        break;
+
+                    case '/':
+                        tokens.add(new Token(Token.Type.DIV));
+                        break;
+
+                    default:
+                        Errorer.syntaxErr("Unknown Token " + peek());
+                        break;
+                }
+
+                consume();
             }
 
         }
