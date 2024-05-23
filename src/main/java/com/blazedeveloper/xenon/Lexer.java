@@ -170,6 +170,14 @@ public class Lexer {
                         tokens.add(new Token(Token.Type.DIV));
                         break;
 
+                    case '(':
+                        tokens.add(new Token(Token.Type.PARENOPEN));
+                        break;
+
+                    case ')':
+                        tokens.add(new Token(Token.Type.PARENCLOSE));
+                        break;
+
                     default:
                         Errorer.syntaxErr("Unknown Token " + peek());
                         break;

@@ -53,9 +53,26 @@ public class Parser {
     }
 
     private NodeExpression parseExpr(Token expression) {
+
         return switch (expression.type) {
             case INT_LITERAL -> new NodeExpressionIntLiteral(expression);
             case IDENTIFIER -> new NodeExpressionIdent(expression);
+            case PARENOPEN -> {
+                consume();
+
+                ArrayList<Token> expressionTokens = new ArrayList<>();
+
+                while(exists() && peek().type != Token.Type.PARENCLOSE) {
+                    expressionTokens.add(consume());
+                }
+
+                // peek() is currently parenthesis close
+                consume(); // consume it
+
+                System.out.println(expressionTokens.toString());
+
+                yield null;
+            }
             default -> {
                 Errorer.syntaxErr("Invalid Expression: " + expression);
                 yield null;
@@ -167,15 +184,21 @@ public class Parser {
     }
 
     public NodeStatementAssign parseAssignment() {
-        if (peek(1).type == Token.Type.EQ) {
-            if (isSemi(3)) {
-                NodeStatementAssign node = new NodeStatementAssign(peek(), parseExpr(peek(2)));
-                consume(3);
+        if (exists(1) && peek(1).type == Token.Type.EQ) {
+
+            NodeStatementAssign node = new NodeStatementAssign(consume(), parseExpr(peek()));
+            // parse expression should have consumed all stuff and made a expression :3
+
+            if (isSemi(0)) {
+                consume();
 
                 return node;
             } else {
                 Errorer.syntaxErr("Expected ';'");
             }
+
+            return null;
+
         } else {
             Errorer.syntaxErr("Expected '='");
         }
