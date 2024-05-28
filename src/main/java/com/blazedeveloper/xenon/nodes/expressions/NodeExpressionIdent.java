@@ -18,4 +18,9 @@ public class NodeExpressionIdent implements NodeExpression {
     public String accept(NodeExpressionVisitor visitor, String register) {
         return visitor.visit(this, register);
     }
+
+    @Override
+    public boolean isTerm() {
+        return true;
+    }
 }
