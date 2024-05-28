@@ -4,4 +4,5 @@ import main.java.com.blazedeveloper.xenon.nodes.expressions.visitor.NodeExpressi
 
 public interface NodeExpression {
     String accept(NodeExpressionVisitor visitor, String register);
+    boolean isTerm();
 }

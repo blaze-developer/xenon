@@ -4,8 +4,11 @@ import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpression;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIdent;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIntLiteral;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeProgram;
+import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionAdd;
+import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionSubtract;
 import main.java.com.blazedeveloper.xenon.nodes.statements.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Parser {
@@ -52,12 +55,23 @@ public class Parser {
         return exists(k) && peek(k).type == Token.Type.ENDLINE;
     }
 
-    private NodeExpression parseExpr(Token expression) {
+    private NodeExpression parseExpr(Token expression, boolean isMainLoop) {
 
         return switch (expression.type) {
-            case INT_LITERAL -> new NodeExpressionIntLiteral(expression);
-            case IDENTIFIER -> new NodeExpressionIdent(expression);
+            case INT_LITERAL -> {
+                if (isMainLoop)
+                    consume();
+                yield new NodeExpressionIntLiteral(expression);
+            }
+            case IDENTIFIER -> {
+                if (isMainLoop)
+                    consume();
+                yield new NodeExpressionIdent(expression);
+            }
             case PARENOPEN -> {
+
+                System.out.println("parenOpen");
+
                 consume();
 
                 ArrayList<Token> expressionTokens = new ArrayList<>();
@@ -69,15 +83,47 @@ public class Parser {
                 // peek() is currently parenthesis close
                 consume(); // consume it
 
-                System.out.println(expressionTokens.toString());
-
-                yield null;
+                yield parseOperation(expressionTokens);
             }
             default -> {
                 Errorer.syntaxErr("Invalid Expression: " + expression);
                 yield null;
             }
         };
+    }
+
+    private NodeExpression parseOperation(ArrayList<Token> tokens) {
+        if (tokens.size() == 0) {
+            Errorer.syntaxErr("Empty math expression!");
+        }
+
+        if (tokens.size() == 1) {
+            return parseExpr(tokens.get(0), false);
+        }
+
+        NodeExpression parsedExpression;
+
+        for (int i = tokens.size() - 2; i >= 0; i--) { // iterate from right to left
+            switch(tokens.get(i).type) {
+                case ADD -> {
+                    Token right = tokens.remove(i + 1);
+                    tokens.remove(i); // remove the operator
+                    Token left = tokens.get(i - 1);
+                    return new NodeExpressionAdd(parseOperation(tokens), parseExpr(right, false));
+                }
+                case SUB -> {
+                    Token right = tokens.remove(i + 1);
+                    tokens.remove(i); // remove the operator
+                    Token left = tokens.get(i - 1);
+                    return new NodeExpressionSubtract(parseOperation(tokens), parseExpr(right, false));
+                }
+                default -> Errorer.syntaxErr("Unknown Operator '" + tokens.get(i).toString() + "'!");
+            }
+
+            System.out.println(tokens);
+        }
+
+        return null;
     }
 
     private Token parseString(Token token) {
@@ -95,7 +141,7 @@ public class Parser {
 
         if (isSemi(2)) { // if ending in semicolon
 
-            stmt = new NodeStatementExit(parseExpr(consume(1)));
+            stmt = new NodeStatementExit(parseExpr(consume(1), true));
 
             consume(); // consume semicolon
 
@@ -163,15 +209,19 @@ public class Parser {
     private NodeStatementSet parseSet() {
         if (exists(1) && peek(1).type == Token.Type.IDENTIFIER) {
             if (exists(2) && peek(2).type == Token.Type.EQ) {
-                if (isSemi(4)) {
-                    // is valid
-                    NodeStatementSet statementSet = new NodeStatementSet(peek(1), parseExpr(peek(3)));
-                    consume(4);
+                // is valid
+                Token identifier = consume(1);
+                consume(); // consume the equals
+                NodeExpression expr = parseExpr(peek(), true);
 
+                NodeStatementSet statementSet = new NodeStatementSet(identifier, expr);
+
+                if (isSemi(0)) {
+                    consume(); // consume the semicolon
                     return statementSet;
-
                 } else {
                     Errorer.syntaxErr("Expected ';'");
+                    return null;
                 }
             } else {
                 Errorer.syntaxErr("Expected '='");
@@ -186,7 +236,11 @@ public class Parser {
     public NodeStatementAssign parseAssignment() {
         if (exists(1) && peek(1).type == Token.Type.EQ) {
 
-            NodeStatementAssign node = new NodeStatementAssign(consume(), parseExpr(peek()));
+            Token ident = consume();
+            consume(); // consume eq
+            NodeExpression expr = parseExpr(peek(), true);
+
+            NodeStatementAssign node = new NodeStatementAssign(ident, expr);
             // parse expression should have consumed all stuff and made a expression :3
 
             if (isSemi(0)) {
@@ -212,6 +266,8 @@ public class Parser {
     public NodeProgram parse() {
 
         while (exists()) {
+
+            System.out.println("Parsing Token " + peek().toString());
 
             switch(peek().type) {
     
