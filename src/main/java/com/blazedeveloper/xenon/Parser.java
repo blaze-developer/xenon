@@ -5,6 +5,8 @@ import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIdent;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIntLiteral;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeProgram;
 import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionAdd;
+import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionDivide;
+import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionMultiply;
 import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionSubtract;
 import main.java.com.blazedeveloper.xenon.nodes.statements.*;
 
@@ -116,6 +118,18 @@ public class Parser {
                     tokens.remove(i); // remove the operator
                     Token left = tokens.get(i - 1);
                     return new NodeExpressionSubtract(parseOperation(tokens), parseExpr(right, false));
+                }
+                case MUL -> {
+                    Token right = tokens.remove(i + 1);
+                    tokens.remove(i); // remove operator
+                    Token left = tokens.get(i - 1);
+                    return new NodeExpressionMultiply(parseOperation(tokens), parseExpr(right, false));
+                }
+                case DIV -> {
+                    Token right = tokens.remove(i + 1);
+                    tokens.remove(i); // remove operator
+                    Token left = tokens.get(i - 1);
+                    return new NodeExpressionDivide(parseOperation(tokens), parseExpr(right, false));
                 }
                 default -> Errorer.syntaxErr("Unknown Operator '" + tokens.get(i).toString() + "'!");
             }
