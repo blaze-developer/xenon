@@ -8,6 +8,8 @@ import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIdent;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIntLiteral;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.visitor.NodeExpressionVisitor;
 import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionAdd;
+import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionDivide;
+import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionMultiply;
 import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionSubtract;
 import main.java.com.blazedeveloper.xenon.nodes.statements.*;
 
@@ -116,22 +118,50 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     // generating the calculation based on the tree, and pushing it to the register.
     @Override
     public String visit(NodeExpressionAdd expr, String register) {
-
         String asm = "";
 
-        if (expr.leftTerm.isTerm() && expr.rightTerm.isTerm()) {
-            asm += expr.leftTerm.accept(this, "rax"); // accumulator
-            asm += expr.rightTerm.accept(this, "rdi");
-            asm += "    add " + register + ", rdi\n";
-            asm += "    mov " + register + ", rax\n";
-        }
+        asm += expr.leftTerm.accept(this, "rax"); // accumulator
+        asm += expr.rightTerm.accept(this, "rdi");
+        asm += "    add rax, rdi\n";
+        asm += "    mov " + register + ", rax\n";
 
         return asm;
     }
 
     @Override
     public String visit(NodeExpressionSubtract expr, String register) {
-        return null;
+        String asm = "";
+
+        asm += expr.leftTerm.accept(this, "rax"); // accumulator
+        asm += expr.rightTerm.accept(this, "rdi");
+        asm += "    sub rax, rdi\n";
+        asm += "    mov " + register + ", rax\n";
+
+        return asm;
+    }
+
+    @Override
+    public String visit(NodeExpressionMultiply expr, String register) {
+        String asm = "";
+
+        asm += expr.leftTerm.accept(this, "rax"); // accumulator
+        asm += expr.rightTerm.accept(this, "rdi");
+        asm += "    imul rax, rdi\n";
+        asm += "    mov " + register + ", rax\n";
+
+        return asm;
+    }
+
+    @Override
+    public String visit(NodeExpressionDivide expr, String register) {
+        String asm = "";
+
+        asm += expr.leftTerm.accept(this, "rax"); // accumulator
+        asm += expr.rightTerm.accept(this, "rdi");
+        asm += "    idiv rdi\n";
+        asm += "    mov " + register + ", rax\n";
+
+        return asm;
     }
 
     private String variableLocation(Token identifier) {
