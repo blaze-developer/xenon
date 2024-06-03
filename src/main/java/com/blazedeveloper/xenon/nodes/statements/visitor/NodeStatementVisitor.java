@@ -10,4 +10,5 @@ public interface NodeStatementVisitor {
     String visit(NodeStatementAssign reassignVarStmt);
     String visit(NodeStatementDeclare nodeStatementDeclare);
     String visit(NodeStatementIncrement nodeStatementIncrement);
+    String visit(NodeStatementDecrement nodeStatementDecrement);
 }
