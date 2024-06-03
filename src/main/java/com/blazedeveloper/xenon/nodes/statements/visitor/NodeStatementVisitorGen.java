@@ -83,7 +83,26 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
 
     @Override
     public String visit(NodeStatementIncrement nodeStatementIncrement) {
-        return null;
+        String asm = "";
+        Token identifier = nodeStatementIncrement.identifier();
+
+        asm += getVariable(identifier, "rax"); // moves the variable into rax
+        asm += "    inc rax\n"; // changes rax
+        asm += setVariable(identifier, "rax"); // moves the value of rax into the variable
+
+        return asm;
+    }
+
+    @Override
+    public String visit(NodeStatementDecrement nodeStatementDecrement) {
+        String asm = "";
+        Token identifier = nodeStatementDecrement.identifier();
+
+        asm += getVariable(identifier, "rax"); // moves the variable into rax
+        asm += "    dec rax\n"; // changes rax
+        asm += setVariable(identifier, "rax"); // moves the value of rax into the variable
+
+        return asm;
     }
 
     @Override
@@ -177,6 +196,14 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
 
         int offset = (stackSize - variables.get(identifier.content)) * 8;
         return "[rsp + " + offset + "]";
+    }
+
+    private String getVariable(Token identifier, String register) {
+        return "    mov " + register + ", " + variableLocation(identifier) + "\n";
+    }
+
+    private String setVariable(Token identifier, String register) {
+        return "    mov " + variableLocation(identifier) + ", " + register + "\n";
     }
 
     private void declareIdentifier(Token identifier, int value) {

@@ -302,6 +302,19 @@ public class Parser {
                     break;
 
                 case IDENTIFIER:
+
+                    if (exists(1) && peek(1).is(Token.Type.ADD) && exists(2) && peek(2).is(Token.Type.ADD) && exists(3) && peek(3).is(Token.Type.ENDLINE)) {
+                        statements.add(new NodeStatementIncrement(peek()));
+                        consume(3);
+                        break;
+                    }
+
+                    if (exists(1) && peek(1).is(Token.Type.SUB) && exists(2) && peek(2).is(Token.Type.SUB) && exists(3) && peek(3).is(Token.Type.ENDLINE)) {
+                        statements.add(new NodeStatementDecrement(peek()));
+                        consume(3);
+                        break;
+                    }
+
                     statements.add(parseAssignment());
                     break;
 
