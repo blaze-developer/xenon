@@ -65,7 +65,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
         String asm = "";
 
         asm += reassignVarStmt.expr().accept(this, "rax");
-        asm += "    mov " + variableLocation(reassignVarStmt.identifier()) + ", rax\n";
+        asm += setVariable(reassignVarStmt.identifier(), "rax");
 
         return asm;
     }
@@ -121,7 +121,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     public String visit(NodeStatementExit exitStmt) {
         String asm = "";
 
-        asm += "    mov rax, 60\n";
+        asm += mov("60", "rax");
         asm += exitStmt.expression().accept(this, "rdi");
         asm += "    syscall\n";
 
@@ -130,12 +130,12 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
 
     @Override
     public String visit(NodeExpressionIdent expr, String register) {
-        return "    mov " + register + ", " + variableLocation(expr.identifier()) + "\n";
+        return getVariable(expr.identifier(), register);
     }
 
     @Override
     public String visit(NodeExpressionIntLiteral expr, String register) {
-        return "    mov " + register + ", " + expr.int_literal().content + "\n";
+        return mov(expr.int_literal().content, register);
     }
 
 
@@ -147,7 +147,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
         asm += expr.leftTerm().accept(this, "rax"); // accumulator
         asm += expr.rightTerm().accept(this, "rdi");
         asm += "    add rax, rdi\n";
-        asm += "    mov " + register + ", rax\n";
+        asm += mov("rax", register);
 
         return asm;
     }
@@ -159,7 +159,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
         asm += expr.leftTerm().accept(this, "rax"); // accumulator
         asm += expr.rightTerm().accept(this, "rdi");
         asm += "    sub rax, rdi\n";
-        asm += "    mov " + register + ", rax\n";
+        asm += mov("rax", register);
 
         return asm;
     }
@@ -171,7 +171,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
         asm += expr.leftTerm().accept(this, "rax"); // accumulator
         asm += expr.rightTerm().accept(this, "rdi");
         asm += "    imul rax, rdi\n";
-        asm += "    mov " + register + ", rax\n";
+        asm += mov("rax", register);
 
         return asm;
     }
@@ -183,7 +183,7 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
         asm += expr.leftTerm().accept(this, "rax"); // accumulator
         asm += expr.rightTerm().accept(this, "rdi");
         asm += "    idiv rdi\n";
-        asm += "    mov " + register + ", rax\n";
+        asm += mov("rax", register);
 
         return asm;
     }
@@ -199,11 +199,19 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     }
 
     private String getVariable(Token identifier, String register) {
-        return "    mov " + register + ", " + variableLocation(identifier) + "\n";
+        return mov(variableLocation(identifier), register);
     }
 
     private String setVariable(Token identifier, String register) {
-        return "    mov " + variableLocation(identifier) + ", " + register + "\n";
+        return mov(register, variableLocation(identifier));
+    }
+
+    private String mov(String from, String to) {
+        if (from.equals(to)) {
+            return "";
+        }
+
+        return "    mov " + to + ", " + from + "\n";
     }
 
     private void declareIdentifier(Token identifier, int value) {
