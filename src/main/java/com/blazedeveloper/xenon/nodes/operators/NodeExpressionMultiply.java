@@ -3,15 +3,7 @@ package main.java.com.blazedeveloper.xenon.nodes.operators;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpression;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.visitor.NodeExpressionVisitor;
 
-public class NodeExpressionMultiply implements NodeExpression {
-
-    public final NodeExpression leftTerm;
-    public final NodeExpression rightTerm;
-
-    public NodeExpressionMultiply(NodeExpression leftTerm, NodeExpression rightTerm) {
-        this.leftTerm = leftTerm;
-        this.rightTerm = rightTerm;
-    }
+public record NodeExpressionMultiply(NodeExpression leftTerm, NodeExpression rightTerm) implements NodeExpression {
 
 
     // actually generating the calculation, and

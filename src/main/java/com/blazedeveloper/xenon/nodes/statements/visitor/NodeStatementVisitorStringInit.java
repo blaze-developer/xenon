@@ -13,7 +13,7 @@ public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
     public String visit(NodeStatementPrint printStmt, int index) {
         String asm = "";
 
-        asm += "    string" + index + " db \"" + printStmt.string_literal.content + "\"\n";
+        asm += "    string" + index + " db \"" + printStmt.string_literal().content + "\"\n";
         asm += "    stringlen" + index + " equ $-string" + index + "\n";
 
         return asm;
@@ -23,7 +23,7 @@ public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
     public String visit(NodeStatementPrintLine printLineStmt, int index) {
         String asm = "";
 
-        asm += "    string" + index + " db \"" + printLineStmt.string_literal.content + "\"\n";
+        asm += "    string" + index + " db \"" + printLineStmt.string_literal().content + "\"\n";
         asm += "    stringlen" + index + " equ $-string" + index + "\n";
 
         return asm;
@@ -41,6 +41,11 @@ public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
 
     @Override
     public String visit(NodeStatementDeclare nodeStatementDeclare) {
+        return "";
+    }
+
+    @Override
+    public String visit(NodeStatementIncrement nodeStatementIncrement) {
         return "";
     }
 
