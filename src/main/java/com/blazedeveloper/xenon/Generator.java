@@ -18,14 +18,14 @@ public class Generator {
     public String generate() {
         StringBuilder asm = new StringBuilder("section .data\n    newline db 10\n");
 
-        for (int i = 0; i < tree.statements.size(); i++) {
-            asm.append(tree.statements.get(i).accept(visitorStringInit, i));
+        for (int i = 0; i < tree.statements().size(); i++) {
+            asm.append(tree.statements().get(i).accept(visitorStringInit, i));
         }
         
         asm.append("\n\nsection .text\n    global _start\n_start:\n");
 
-        for (int i = 0; i < tree.statements.size(); i++) {
-            asm.append(tree.statements.get(i).accept(visitorGen, i));
+        for (int i = 0; i < tree.statements().size(); i++) {
+            asm.append(tree.statements().get(i).accept(visitorGen, i));
         }
 
         asm.append("    mov rax, 60\n");

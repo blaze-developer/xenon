@@ -4,17 +4,7 @@ import main.java.com.blazedeveloper.xenon.Token;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpression;
 import main.java.com.blazedeveloper.xenon.nodes.statements.visitor.NodeStatementVisitor;
 
-import java.beans.Expression;
-
-public class NodeStatementAssign implements NodeStatement {
-
-    public final Token identifier;
-    public final NodeExpression expr;
-
-    public NodeStatementAssign(Token identifier, NodeExpression expr) {
-        this.identifier = identifier;
-        this.expr = expr;
-    }
+public record NodeStatementAssign(Token identifier, NodeExpression expr) implements NodeStatement {
 
     @Override
     public String toString() {

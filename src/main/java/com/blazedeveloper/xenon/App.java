@@ -70,7 +70,7 @@ public class App {
         if (debugMode) {
             System.out.println("Finished Parsing!\n\nStatements:");
 
-            for (NodeStatement statement : programTree.statements) {
+            for (NodeStatement statement : programTree.statements()) {
                 System.out.println(statement);
             }
 
