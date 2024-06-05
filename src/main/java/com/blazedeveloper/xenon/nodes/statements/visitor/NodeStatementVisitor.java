@@ -11,4 +11,6 @@ public interface NodeStatementVisitor {
     String visit(NodeStatementDeclare nodeStatementDeclare);
     String visit(NodeStatementIncrement nodeStatementIncrement);
     String visit(NodeStatementDecrement nodeStatementDecrement);
+
+    String visit(NodeStatementAsm nodeStatementAsm, int i);
 }

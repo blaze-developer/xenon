@@ -2,6 +2,7 @@
 package main.java.com.blazedeveloper.xenon;
 
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class Lexer {
 
@@ -69,30 +70,9 @@ public class Lexer {
                     buffer += consume();
                 }
 
-                switch (buffer) {
-                    case Constants.Keywords.EXIT:
-                        tokens.add(new Token(Token.Type.EXIT));
-                        break;
+                Token.Type type = Constants.Keywords.keywords.getOrDefault(buffer, Token.Type.IDENTIFIER);
 
-                    case Constants.Keywords.PRINT:
-                        tokens.add(new Token(Token.Type.PRINT));
-                        break;
-
-                    case Constants.Keywords.PRINTLN:
-                        tokens.add(new Token(Token.Type.PRINTLN));
-                        break;
-
-                    case Constants.Keywords.SET:
-                        tokens.add(new Token(Token.Type.SET));
-                        break;
-
-                    case Constants.Keywords.DECLARE:
-                        tokens.add(new Token(Token.Type.DECLARE));
-                        break;
-
-                    default:
-                        tokens.add(new Token(Token.Type.IDENTIFIER, buffer));
-                }
+                tokens.add(new Token(type, buffer));
 
                 clearBuffer();
 

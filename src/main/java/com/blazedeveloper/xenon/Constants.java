@@ -1,11 +1,20 @@
 package main.java.com.blazedeveloper.xenon;
 
+import java.util.HashMap;
+
 public class Constants {
     public static class Keywords {
-        public static final String EXIT = "exit";
-        public static final String PRINT = "print";
-        public static final String PRINTLN = "printline";
-        public static final String SET = "init";
-        public static final String DECLARE = "declare";
+
+        public static final HashMap<String, Token.Type> keywords = new HashMap<>();
+
+        static {
+            keywords.put("exit", Token.Type.EXIT);
+            keywords.put("print", Token.Type.PRINT);
+            keywords.put("printline", Token.Type.PRINTLN);
+            keywords.put("init", Token.Type.SET);
+            keywords.put("declare", Token.Type.DECLARE);
+            keywords.put("asm", Token.Type.ASM);
+        }
+
     }
 }

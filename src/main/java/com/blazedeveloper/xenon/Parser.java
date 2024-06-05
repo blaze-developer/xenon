@@ -322,11 +322,29 @@ public class Parser {
                     statements.add(parseDeclare());
                     break;
 
+                case ASM:
+                    statements.add(parseAsm());
+                    break;
+
                 default:
                     Errorer.syntaxErr("Invalid Statement at token " + peek().type);
             }
         }
 
         return new NodeProgram(statements);
+    }
+
+    private NodeStatement parseAsm() {
+        if (isSemi(2)) {
+            NodeStatementAsm stmt = new NodeStatementAsm(parseString(consume(1)));
+
+            consume();
+
+            return stmt;
+        } else {
+            Errorer.syntaxErr("Expected ';'");
+        }
+
+        return null;
     }
 }
