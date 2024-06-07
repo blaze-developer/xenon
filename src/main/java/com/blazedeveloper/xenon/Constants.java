@@ -14,6 +14,7 @@ public class Constants {
             keywords.put("init", Token.Type.SET);
             keywords.put("declare", Token.Type.DECLARE);
             keywords.put("asm", Token.Type.ASM);
+            keywords.put("sqrt", Token.Type.SQRT);
         }
 
     }

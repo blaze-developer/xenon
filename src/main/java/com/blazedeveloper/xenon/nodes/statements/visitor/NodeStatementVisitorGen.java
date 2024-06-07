@@ -118,6 +118,17 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     }
 
     @Override
+    public String visit(NodeStatementSqrt nodeStatementSqrt) {
+        String asm = "";
+
+        asm += getVariable(nodeStatementSqrt.identifier(), "rax");
+        asm += "    fsqrt rax";
+        asm += setVariable(nodeStatementSqrt.identifier(), "rax");
+
+        return asm;
+    }
+
+    @Override
     public String visit(NodeStatementSet setStmt) {
         String asm = "";
 

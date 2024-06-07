@@ -12,6 +12,7 @@ import main.java.com.blazedeveloper.xenon.nodes.statements.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class Parser {
     private final ArrayList<Token> tokens;
@@ -149,6 +150,8 @@ public class Parser {
         }
     }
 
+
+
     // Precondition: current token is EXIT token.
     private NodeStatementExit parseExit() {
         NodeStatementExit stmt;
@@ -209,6 +212,25 @@ public class Parser {
                 consume(2);
 
                 return statementDecl;
+
+            } else {
+                Errorer.syntaxErr("Expected ';'");
+            }
+        } else {
+            Errorer.syntaxErr("Expected identifier.");
+        }
+
+        return null;
+    }
+
+    private NodeStatementSqrt parseSqrt() {
+        if (exists(1) && peek(1).type == Token.Type.IDENTIFIER) {
+            if (isSemi(2)) {
+                // is valid
+                NodeStatementSqrt statementSqrt = new NodeStatementSqrt(peek(1));
+                consume(2);
+
+                return statementSqrt;
 
             } else {
                 Errorer.syntaxErr("Expected ';'");
@@ -320,6 +342,10 @@ public class Parser {
 
                 case DECLARE:
                     statements.add(parseDeclare());
+                    break;
+
+                case SQRT:
+                    statements.add(parseSqrt());
                     break;
 
                 case ASM:
