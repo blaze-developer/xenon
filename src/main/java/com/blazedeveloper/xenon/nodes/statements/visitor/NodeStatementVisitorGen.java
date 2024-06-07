@@ -121,9 +121,9 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     public String visit(NodeStatementSqrt nodeStatementSqrt) {
         String asm = "";
 
-        asm += getVariable(nodeStatementSqrt.identifier(), "rax");
-        asm += "    fsqrt rax";
-        asm += setVariable(nodeStatementSqrt.identifier(), "rax");
+        asm += "    fild qword " + variableLocation(nodeStatementSqrt.identifier()) + " ; converts 64 bit integer into float and pushes onto FPU stack\n";
+        asm += "    fsqrt ; square roots the current top of the stack\n";
+        asm += "    fistp qword " + variableLocation(nodeStatementSqrt.identifier()) + " ; converts back into an integer, and pops off the FPU stack and into the variable location on the memory stack.\n";
 
         return asm;
     }

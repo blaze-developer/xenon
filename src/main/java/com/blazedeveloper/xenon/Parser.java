@@ -158,9 +158,9 @@ public class Parser {
 
         if (isSemi(2)) { // if ending in semicolon
 
-            stmt = new NodeStatementExit(parseExpr(consume(1), true));
+            stmt = new NodeStatementExit(parseExpr(peek(1), true));
 
-            consume(); // consume semicolon
+            consume(1);
 
             return stmt;
         } else {
