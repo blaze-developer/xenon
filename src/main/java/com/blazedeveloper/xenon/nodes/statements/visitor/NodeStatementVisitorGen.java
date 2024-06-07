@@ -106,6 +106,18 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     }
 
     @Override
+    public String visit(NodeStatementAsm nodeStatementAsm, int i) {
+        String inputasm = nodeStatementAsm.string_literal().content;
+
+        if (inputasm.startsWith(" ")) {
+            Errorer.usageErr("Inline ASM Statement Inproperly Formatted");
+            return null;
+        }
+
+        return "    " + inputasm + "\n";
+    }
+
+    @Override
     public String visit(NodeStatementSet setStmt) {
         String asm = "";
 

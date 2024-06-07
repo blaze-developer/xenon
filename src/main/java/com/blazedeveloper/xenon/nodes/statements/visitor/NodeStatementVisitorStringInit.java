@@ -54,4 +54,9 @@ public class NodeStatementVisitorStringInit implements NodeStatementVisitor {
         return "";
     }
 
+    @Override
+    public String visit(NodeStatementAsm nodeStatementAsm, int i) {
+        return "";
+    }
+
 }

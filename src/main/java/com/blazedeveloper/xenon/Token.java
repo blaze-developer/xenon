@@ -29,6 +29,7 @@ public class Token {
         EXIT,
         PRINT,
         PRINTLN,
+        ASM,
         STRING_LITERAL,
         INT_LITERAL,
         ENDLINE,
