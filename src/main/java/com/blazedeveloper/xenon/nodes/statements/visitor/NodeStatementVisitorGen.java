@@ -129,6 +129,26 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     }
 
     @Override
+    public String visit(NodeStatementSquare nodeStatementSquare) {
+        String asm = "";
+
+        Token identifier = nodeStatementSquare.identifier();
+        NodeExpressionIdent identifierExpr = new NodeExpressionIdent(nodeStatementSquare.identifier());
+
+        asm += visit(
+                new NodeStatementAssign(
+                        identifier,
+                        new NodeExpressionMultiply(
+                                identifierExpr,
+                                identifierExpr
+                        )
+                )
+        );
+
+        return asm;
+    }
+
+    @Override
     public String visit(NodeStatementSet setStmt) {
         String asm = "";
 

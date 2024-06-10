@@ -40,6 +40,6 @@ public class Token {
         ADD,
         SUB,
         MUL,
-        PARENOPEN, PARENCLOSE, SQRT, DIV
+        PARENOPEN, PARENCLOSE, SQRT, SQUARE, DIV
     }
 }

@@ -242,6 +242,25 @@ public class Parser {
         return null;
     }
 
+    private NodeStatementSquare parseSquare() {
+        if (exists(1) && peek(1).type == Token.Type.IDENTIFIER) {
+            if (isSemi(2)) {
+                // is valid
+                NodeStatementSquare statementSquare = new NodeStatementSquare(peek(1));
+                consume(2);
+
+                return statementSquare;
+
+            } else {
+                Errorer.syntaxErr("Expected ';'");
+            }
+        } else {
+            Errorer.syntaxErr("Expected identifier.");
+        }
+
+        return null;
+    }
+
     private NodeStatementSet parseSet() {
         if (exists(1) && peek(1).type == Token.Type.IDENTIFIER) {
             if (exists(2) && peek(2).type == Token.Type.EQ) {
@@ -350,6 +369,10 @@ public class Parser {
 
                 case ASM:
                     statements.add(parseAsm());
+                    break;
+
+                case SQUARE:
+                    statements.add(parseSquare());
                     break;
 
                 default:
