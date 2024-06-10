@@ -1,0 +1,14 @@
+// INPUTS
+init a = 69; // Side a of triangle
+init b = 49; // Side b of triangle
+
+
+// CALCULATION
+
+square a;
+square b;
+
+init c = (a + b); // as + bs
+sqrt c; // square rooted
+
+exit c; // exit with the hypotenuse

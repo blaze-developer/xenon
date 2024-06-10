@@ -32,4 +32,3 @@ bin/
 test
 test.asm
 test.o
-*.xe
