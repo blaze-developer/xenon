@@ -17,4 +17,6 @@ public interface NodeStatementVisitor {
     String visit(NodeStatementSqrt nodeStatementSqrt);
 
     String visit(NodeStatementSquare nodeStatementSquare);
+
+    String visit(InlineComment inlineComment);
 }

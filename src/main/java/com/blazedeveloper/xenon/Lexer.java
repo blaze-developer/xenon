@@ -112,9 +112,14 @@ public class Lexer {
             } else if (peek() == '/' && peekExists(1) && peek(1) == '/') {
                 consume(1);
 
+                StringBuilder comment = new StringBuilder();
+
                 while (peekExists() && peek() != '\n') {
+                    comment.append(peek());
                     consume();
                 }
+
+                tokens.add(new Token(Token.Type.INLINE_COMMENT, comment.toString()));
 
             } else if (peek() == '/' && peekExists(1) && peek(1) == '*') { // has a /*
 

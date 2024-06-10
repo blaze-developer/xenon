@@ -1,15 +1,19 @@
-/*
-    Test script to test out square roots. Should exit the starting value of x,
-    this shows that squaring a number can be undone and that square roots work as intended.
-*/
+//
+//  Example script which calculates the third side of any right triangle, rounded to the nearest integer.
+//  For simple tests, try out pythagorean triples, for example a = 3, b = 4, c should = 5. (use google)
+//
 
 // INPUTS
-init x = 50;
+init a = 69; // Side a of triangle
+init b = 49; // Side b of triangle
 
 
 // CALCULATION
 
-square x; // square the number
-sqrt x; // get the square root of the squared number, should basically undo the square.
+square a;
+square b;
 
-exit x;
+init c = (a + b); // as + bs
+sqrt c; // square rooted
+
+exit c; // exit with the hypotenuse

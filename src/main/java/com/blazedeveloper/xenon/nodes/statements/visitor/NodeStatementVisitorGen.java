@@ -149,6 +149,11 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
     }
 
     @Override
+    public String visit(InlineComment inlineComment) {
+        return "; " + inlineComment.comment() + "\n";
+    }
+
+    @Override
     public String visit(NodeStatementSet setStmt) {
         String asm = "";
 

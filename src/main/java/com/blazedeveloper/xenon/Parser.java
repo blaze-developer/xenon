@@ -375,6 +375,11 @@ public class Parser {
                     statements.add(parseSquare());
                     break;
 
+                case INLINE_COMMENT:
+                    statements.add(new InlineComment(peek().content));
+                    consume(); // Consumes the comment to continue reading.
+                    break;
+
                 default:
                     Errorer.syntaxErr("Invalid Statement at token " + peek().type);
             }
