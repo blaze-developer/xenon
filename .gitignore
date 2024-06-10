@@ -30,6 +30,6 @@ bin/
 
 ### my stuff ###
 test
-test.xe
 test.asm
 test.o
+*.xe
