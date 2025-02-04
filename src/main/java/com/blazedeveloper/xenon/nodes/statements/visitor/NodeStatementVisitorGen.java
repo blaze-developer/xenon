@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import main.java.com.blazedeveloper.xenon.Errorer;
 import main.java.com.blazedeveloper.xenon.Token;
+import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionBoolLiteral;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIdent;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIntLiteral;
 import main.java.com.blazedeveloper.xenon.nodes.expressions.visitor.NodeExpressionVisitor;
@@ -186,6 +187,10 @@ public class NodeStatementVisitorGen implements NodeStatementVisitor, NodeExpres
         return mov(expr.int_literal().content, register);
     }
 
+    @Override
+    public String visit(NodeExpressionBoolLiteral expr, String register) {
+        return mov(expr.boolLiteral().content, register);
+    }
 
     // generating the calculation based on the tree, and pushing it to the register.
     @Override

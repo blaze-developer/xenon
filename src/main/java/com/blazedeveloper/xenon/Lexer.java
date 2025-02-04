@@ -2,7 +2,6 @@
 package main.java.com.blazedeveloper.xenon;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
 
 public class Lexer {
 

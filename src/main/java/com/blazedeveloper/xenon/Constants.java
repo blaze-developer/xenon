@@ -16,6 +16,9 @@ public class Constants {
             keywords.put("asm", Token.Type.ASM);
             keywords.put("sqrt", Token.Type.SQRT);
             keywords.put("square", Token.Type.SQUARE);
+            keywords.put("bool", Token.Type.DECLAREBOOL);
+            keywords.put("true", Token.Type.TRUE);
+            keywords.put("false", Token.Type.FALSE);
         }
 
     }

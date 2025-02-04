@@ -3,14 +3,20 @@ package main.java.com.blazedeveloper.xenon;
 public class Token {
     public final Type type;
     public final String content;
+    public final String subContent;
 
-    public Token(Type type, String content) {
+    public Token(Type type, String content, String subContent) {
         if (type == null) {
             throw new Error("TokenType cannot be null!");
         }
 
         this.type = type;
         this.content = content;
+        this.subContent = subContent;
+    }
+
+    public Token(Type type, String content) {
+        this(type, content, "");
     }
 
     public Token(Type type) {
@@ -40,6 +46,14 @@ public class Token {
         ADD,
         SUB,
         MUL,
-        PARENOPEN, PARENCLOSE, SQRT, SQUARE, INLINE_COMMENT, DIV
+        PARENOPEN,
+        PARENCLOSE,
+        SQRT,
+        SQUARE,
+        INLINE_COMMENT,
+        DIV,
+        DECLAREBOOL,
+        TRUE,
+        FALSE
     }
 }

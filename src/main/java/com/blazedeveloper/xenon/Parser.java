@@ -1,9 +1,6 @@
 package main.java.com.blazedeveloper.xenon;
 
-import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpression;
-import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIdent;
-import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeExpressionIntLiteral;
-import main.java.com.blazedeveloper.xenon.nodes.expressions.NodeProgram;
+import main.java.com.blazedeveloper.xenon.nodes.expressions.*;
 import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionAdd;
 import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionDivide;
 import main.java.com.blazedeveloper.xenon.nodes.operators.NodeExpressionMultiply;
@@ -66,6 +63,16 @@ public class Parser {
                     consume();
                 yield new NodeExpressionIntLiteral(expression);
             }
+            case TRUE -> {
+                if (isMainLoop)
+                    consume();
+                yield new NodeExpressionBoolLiteral(expression);
+            }
+            case FALSE -> {
+                if (isMainLoop)
+                    consume();
+                yield new NodeExpressionBoolLiteral(expression);
+            }
             case IDENTIFIER -> {
                 if (isMainLoop)
                     consume();
@@ -96,12 +103,12 @@ public class Parser {
     }
 
     private NodeExpression parseOperation(ArrayList<Token> tokens) {
-        if (tokens.size() == 0) {
+        if (tokens.isEmpty()) {
             Errorer.syntaxErr("Empty math expression!");
         }
 
         if (tokens.size() == 1) {
-            return parseExpr(tokens.get(0), false);
+            return parseExpr(tokens.getFirst(), false);
         }
 
         NodeExpression parsedExpression;
@@ -362,6 +369,9 @@ public class Parser {
                 case DECLARE:
                     statements.add(parseDeclare());
                     break;
+
+                case DECLAREBOOL:
+                    statements.add(parseDeclare());
 
                 case SQRT:
                     statements.add(parseSqrt());
